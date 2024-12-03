@@ -37,7 +37,7 @@ docker exec -it cassandra1 nodetool status
 ```
 ---
 ### Скриншот примера работы
-![Примеры работы](screenshots/img_1.png)
+![Примеры работы](screenshots/screenshot1.png)
 
 ---
 ## Подключение к Cassandra
@@ -57,7 +57,7 @@ cqlsh 192.168.1.202
 Убедитесь, что соединение успешно установлено. 
 
 ### Пример успешного подключения:
-![Примеры работы](screenshots/img.png)
+![Примеры работы](screenshots/screenshot2.png)
 
 ---
 
