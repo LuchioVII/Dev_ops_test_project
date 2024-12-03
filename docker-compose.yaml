@@ -1,0 +1,48 @@
+version: "3.9"
+
+networks:
+  cassandra-net:
+    external: true
+
+services:
+  cassandra1:
+    image: cassandra:4.0
+    container_name: cassandra1
+    networks:
+      cassandra-net:
+        ipv4_address: 192.168.1.200
+    ports:
+      - "9042:9042"
+    environment:
+      - CASSANDRA_SEEDS=192.168.1.200,192.168.1.201,192.168.1.202
+      - CASSANDRA_CLUSTER_NAME=LocalCluster
+      - CASSANDRA_LISTEN_ADDRESS=192.168.1.200
+      - CASSANDRA_BROADCAST_ADDRESS=192.168.1.200
+
+  cassandra2:
+    image: cassandra:4.0
+    container_name: cassandra2
+    networks:
+      cassandra-net:
+        ipv4_address: 192.168.1.201
+    depends_on:
+      - cassandra1
+    environment:
+      - CASSANDRA_SEEDS=192.168.1.200,192.168.1.201,192.168.1.202
+      - CASSANDRA_CLUSTER_NAME=LocalCluster
+      - CASSANDRA_LISTEN_ADDRESS=192.168.1.201
+      - CASSANDRA_BROADCAST_ADDRESS=192.168.1.201
+
+  cassandra3:
+    image: cassandra:4.0
+    container_name: cassandra3
+    networks:
+      cassandra-net:
+        ipv4_address: 192.168.1.202
+    depends_on:
+      - cassandra1
+    environment:
+      - CASSANDRA_SEEDS=192.168.1.200,192.168.1.201,192.168.1.202
+      - CASSANDRA_CLUSTER_NAME=LocalCluster
+      - CASSANDRA_LISTEN_ADDRESS=192.168.1.202
+      - CASSANDRA_BROADCAST_ADDRESS=192.168.1.202
