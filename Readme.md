@@ -19,8 +19,13 @@
 Для настройки фиксированных IP-адресов создаём пользовательскую сеть в Docker:
 
 ```bash
-docker network create --subnet=192.168.1.0/24 cassandra-net
-```
+networks:
+  cassandra-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
+````
 ---
 
 ### 2. Запуск кластера
@@ -42,7 +47,7 @@ docker exec -it cassandra1 nodetool status
 ---
 ## Подключение к Cassandra
 ```bash
-docker run -it --rm --network cassandra-net cassandra:4.0 bash
+ docker run -it --rm --network dev_ops_test_project_cassandra-net cassandra:4.0 bash
 ```
 
 Используйте cqlsh для подключения к каждому узлу:

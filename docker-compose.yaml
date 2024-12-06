@@ -2,7 +2,10 @@ version: "3.9"
 
 networks:
   cassandra-net:
-    external: true
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.1.0/24
 
 services:
   cassandra1:
@@ -18,6 +21,7 @@ services:
       - CASSANDRA_CLUSTER_NAME=LocalCluster
       - CASSANDRA_LISTEN_ADDRESS=192.168.1.200
       - CASSANDRA_BROADCAST_ADDRESS=192.168.1.200
+      - CASSANDRA_RPC_ADDRESS=192.168.1.200
 
   cassandra2:
     image: cassandra:4.0
@@ -25,13 +29,14 @@ services:
     networks:
       cassandra-net:
         ipv4_address: 192.168.1.201
-    depends_on:
-      - cassandra1
+    ports:
+      - "9043:9043"
     environment:
       - CASSANDRA_SEEDS=192.168.1.200,192.168.1.201,192.168.1.202
       - CASSANDRA_CLUSTER_NAME=LocalCluster
       - CASSANDRA_LISTEN_ADDRESS=192.168.1.201
       - CASSANDRA_BROADCAST_ADDRESS=192.168.1.201
+      - CASSANDRA_RPC_ADDRESS=192.168.1.201
 
   cassandra3:
     image: cassandra:4.0
@@ -39,10 +44,11 @@ services:
     networks:
       cassandra-net:
         ipv4_address: 192.168.1.202
-    depends_on:
-      - cassandra1
+    ports:
+      - "9044:9044"
     environment:
       - CASSANDRA_SEEDS=192.168.1.200,192.168.1.201,192.168.1.202
       - CASSANDRA_CLUSTER_NAME=LocalCluster
       - CASSANDRA_LISTEN_ADDRESS=192.168.1.202
       - CASSANDRA_BROADCAST_ADDRESS=192.168.1.202
+      - CASSANDRA_RPC_ADDRESS=192.168.1.202
